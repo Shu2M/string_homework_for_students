@@ -90,10 +90,10 @@ def corrected(wrong_article_lines: list) -> str:
         Исправленное предложение
     """
     for sentence in wrong_article_lines:
-        sentence = sentence.strip('!.')
+        sentence = sentence.strip('!')
         sentence = sentence[::-1]
         sentence = re.sub('WOOF-WOOF', 'CAT', sentence)
-        yield sentence.capitalize() + SPLIT_SYMBOL
+        yield sentence.capitalize()
 
 
 def recover_article() -> str:
@@ -103,4 +103,4 @@ def recover_article() -> str:
         Восстановленная статья в виде строки.
     """
     wrong_article = get_wrong_article()
-    return ''.join(corrected(wrong_article.splitlines()))
+    return SPLIT_SYMBOL.join(corrected(wrong_article.split(SPLIT_SYMBOL)))
