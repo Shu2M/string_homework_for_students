@@ -41,7 +41,7 @@ def get_article(path: str) -> str:
         path: путь до статьи
 
     Returns:
-        str: Текст статьи в виде строки
+        Текст статьи в виде строки
     """
     with open(path, 'r') as file_article:
         article = file_article.read()
@@ -80,18 +80,27 @@ def get_wrong_article() -> str:
     )
 
 
+def corrected(wrong_article_lines: list) -> str:
+    """Итератор обработки предложений.
+
+    Args:
+        wrong_article_lines: список испорченный предложений
+
+    Yields:
+        Исправленное предложение
+    """
+    for sentence in wrong_article_lines:
+        sentence = sentence.strip('!.')
+        sentence = sentence[::-1]
+        sentence = re.sub('WOOF-WOOF', 'CAT', sentence)
+        yield sentence.capitalize() + SPLIT_SYMBOL
+
+
 def recover_article() -> str:
     """Функция возвращает восстановленную статью в виде строки.
 
     Returns:
-        Восстановленная статья в вдие строки.
+        Восстановленная статья в виде строки.
     """
     wrong_article = get_wrong_article()
-    correct_article = ''
-    for sentence in wrong_article.splitlines():
-        sentence = sentence.strip(SPLIT_SYMBOL)
-        sentence = sentence.strip('!')
-        sentence = sentence[::-1]
-        sentence = re.sub('WOOF-WOOF', 'CAT', sentence)
-        correct_article += sentence.capitalize() + SPLIT_SYMBOL
-    return correct_article
+    return ''.join(corrected(wrong_article.splitlines()))
